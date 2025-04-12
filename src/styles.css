@@ -1,0 +1,23 @@
+body {
+    display: flex;
+
+    /* testing margins */
+    margin: 50px;
+}
+
+#sidebar {
+    display: flex;
+    flex-direction: column;
+
+    width: 20vw;
+    height: 100vh;
+
+}
+
+#main {
+    display: flex;
+    flex-direction: column;
+
+    width: 80vw;
+    height: 100vh;
+}
