@@ -26,6 +26,10 @@ body {
     margin: 10px;
 }
 
+.todo-item {
+    margin-bottom: 10px;
+}
+
 /* Style the button that is used to open and close the collapsible content */
 .collapsible {
     background-color: #eee;

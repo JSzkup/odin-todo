@@ -32,12 +32,64 @@ function createAddTodoButton() {
     return todoButton;
 }
 
-function deleteTodo() {
-    // TODO delete an already existing todo
+function deleteTodo(todoElement) {
+    const deleteButton = document.createElement("button");
+    deleteButton.classList.add("delete-button");
+
+    deleteButton.textContent = "Delete";
+    deleteButton.addEventListener("click", () => {
+        const delTodoElement = deleteButton.parentElement;
+        delTodoElement.remove();
+    });
+
+    todoElement.appendChild(deleteButton);
 }
 
 function editTodo() {
-    // TODO need to be able to edit a todo, hopefully just by clicking on it
+    // TODO need to be able to edit a todo, on click turn it back into a form
+}
+
+function createTodoCheckbox(todoElement) {
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.classList.add("todo-checkbox");
+
+    checkbox.addEventListener("change", () => {
+        if (checkbox.checked) {
+            todoElement.classList.add("completed");
+        } else {
+            todoElement.classList.remove("completed");
+        }
+    });
+
+    todoElement.appendChild(checkbox);
+}
+
+function submitTodo(todoArea, todoForm, elements) {
+    todoForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const newTodo = new todoClass(
+            elements.title.value,
+            elements.description.value,
+            elements.dueDate.value,
+            elements.priority.value,
+            elements.notes.value
+        );
+
+        const todoElement = createTodoElement(newTodo);
+        todoArea.insertBefore(todoElement, todoForm.previousElementSibling);
+
+        // Reset and reposition form
+        todoForm.reset();
+        todoForm.style.display = "none";
+
+        // Move the "Add Todo" button and form to the bottom
+        const addButton = todoForm.previousElementSibling;
+        todoArea.appendChild(addButton);
+        todoArea.appendChild(todoForm);
+    });
 }
 
 function addTodo(todoArea) {
@@ -81,33 +133,18 @@ function addTodo(todoArea) {
         elements[config.attrs.id] = element;
     });
 
-    // TODO separate submit into its own function
-    todoForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        const newTodo = new todoClass(
-            elements.title.value,
-            elements.description.value,
-            elements.dueDate.value,
-            elements.priority.value,
-            elements.notes.value
-        );
-
-        const todoElement = createTodoElement(newTodo);
-        // TODO google insertbefore
-        todoArea.insertBefore(todoElement, todoForm.previousElementSibling);
-
-        // Reset and reposition form
-        todoForm.reset();
-        todoForm.style.display = "none";
-
-        // Move the "Add Todo" button and form to the bottom
-        const addButton = todoForm.previousElementSibling;
-        todoArea.appendChild(addButton);
-        todoArea.appendChild(todoForm);
-    });
+    submitTodo(todoArea, todoForm, elements);
 
     return todoForm;
+}
+
+function resetForm(todoButton) {
+    // Toggle form visibility
+    todoButton.addEventListener("click", function () {
+        this.classList.toggle("active");
+        let content = this.nextElementSibling;
+        content.style.display = content.style.display === "block" ? "none" : "block";
+    });
 }
 
 export function todoDOM() {
@@ -118,6 +155,10 @@ export function todoDOM() {
     const todoElement = createTodoElement(testTodo);
     todoArea.appendChild(todoElement);
 
+    // TODO get these working with newly added elements
+    createTodoCheckbox(todoElement);
+    deleteTodo(todoElement);
+
     // Add the "Add Todo" button and form
     const todoButton = createAddTodoButton();
     const form = addTodo(todoArea);
@@ -126,11 +167,7 @@ export function todoDOM() {
     todoArea.appendChild(todoButton);
     todoArea.appendChild(form);
 
-    // TODO set the form reset to be its own function
-    // Toggle form visibility
-    todoButton.addEventListener("click", function () {
-        this.classList.toggle("active");
-        let content = this.nextElementSibling;
-        content.style.display = content.style.display === "block" ? "none" : "block";
-    });
+    resetForm(todoButton);
+
+
 }
