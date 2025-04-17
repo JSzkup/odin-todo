@@ -5,6 +5,3 @@ import { todoDOM } from "./todoView.js";
 let projectArray = [];
 
 todoDOM();
-
-console.log(projectArray[0].getTitle)
-console.log(projectArray)

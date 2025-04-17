@@ -1,9 +1,73 @@
 import { todoClass } from "./todoCreation.js";
 
-export function addTodo() {
+function addTodo() {
+
+    const todoForm = document.createElement('form');
+    todoForm.classList.add("content");
+
+    const titleInput = document.createElement('input');
+    titleInput.type = 'text';
+    titleInput.placeholder = 'Title';
+    titleInput.id = 'title';
+
+    const descriptionInput = document.createElement('input');
+    descriptionInput.type = 'text';
+    descriptionInput.placeholder = 'Description';
+    descriptionInput.id = 'description';
+
+    const dateInput = document.createElement('input');
+    dateInput.type = 'date';
+    dateInput.id = 'dueDate';
+    // titleInput.required = true;
+
+    const prioritySelect = document.createElement('select');
+    prioritySelect.id = 'priority';
+
+    const priorities = [
+        { value: '0', text: 'Low Priority' },
+        { value: '1', text: 'Medium Priority' },
+        { value: '2', text: 'High Priority' }
+    ];
+
+    priorities.forEach(priority => {
+        const option = document.createElement('option');
+        option.value = priority.value;
+        option.textContent = priority.text;
+        prioritySelect.appendChild(option);
+    });
+
+    const notesTextarea = document.createElement('textarea');
+    notesTextarea.placeholder = 'Notes';
+    notesTextarea.id = 'notes';
+
+    const submitButton = document.createElement('button');
+    submitButton.type = 'submit';
+    submitButton.textContent = 'Create Todo';
 
 
-    return new todoClass(title, description, dueDate, priority, notes)
+    [titleInput, descriptionInput, dateInput, prioritySelect, notesTextarea, submitButton]
+        .forEach(element => todoForm.appendChild(element));
+
+
+    todoForm.addEventListener('submit', (e) => {
+        e.preventDefault(); // Prevent form from submitting normally
+
+        const title = titleInput.value;
+        const description = descriptionInput.value;
+        const dueDate = dateInput.value;
+        const priority = prioritySelect.value;
+        const notes = notesTextarea.value;
+
+        const newTodo = new todoClass(title, description, dueDate, priority, notes);
+
+        todoForm.reset();
+
+        return newTodo;
+    });
+
+    return todoForm;
+
+
 }
 
 export function todoDOM() {
@@ -31,13 +95,8 @@ export function todoDOM() {
 
     todoNotes.textContent = testTodo.getNotes;
 
-    // TODO each todo should be a li in a ul
-
-    todoItself.appendChild(todoTitle);
-    todoItself.appendChild(todoDescription);
-    todoItself.appendChild(todoDueDate);
-    todoItself.appendChild(todoPriority);
-    todoItself.appendChild(todoNotes);
+    [todoTitle, todoDescription, todoDueDate, todoPriority, todoNotes]
+        .forEach(element => todoItself.appendChild(element));
 
     todoArea.appendChild(todoItself);
 
@@ -45,29 +104,11 @@ export function todoDOM() {
     todoButton.classList.add("collapsible");
     todoButton.textContent = "Add Todo";
 
-    const todoForm = document.createElement("div");
-    todoForm.classList.add("content");
-
-    todoForm.innerHTML = `
-    <form>
-        <input type="text" placeholder="Title">
-        <input type="text" placeholder="Description">
-        <input type="date" placeholder="Due Date">
-        <select>
-            <option value="0">Low Priority</option>
-            <option value="1">Medium Priority</option>
-            <option value="2">High Priority</option>
-        </select>
-        <textarea placeholder="Notes"></textarea>
-    </form>
-    `;
-
-    // TODO this form needs to return into the todo object
-
-
+    const form = addTodo();
+    form.style.display = "none";
 
     todoArea.appendChild(todoButton);
-    todoArea.appendChild(todoForm);
+    todoArea.appendChild(form);
 
     todoButton.addEventListener("click", function () {
         this.classList.toggle("active");
@@ -78,21 +119,5 @@ export function todoDOM() {
             content.style.display = "block";
         }
     });
-
-    // let coll = document.getElementsByClassName("collapsible");
-    // let i;
-
-    // for (i = 0; i < coll.length; i++) {
-    //     coll[i].addEventListener("click", function () {
-    //         this.classList.toggle("active");
-    //         var content = this.nextElementSibling;
-    //         if (content.style.display === "block") {
-    //             content.style.display = "none";
-    //         } else {
-    //             content.style.display = "block";
-    //         }
-    //     });
-    // }
-
 
 }
