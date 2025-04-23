@@ -56,3 +56,36 @@ body {
     overflow: hidden;
     background-color: #f1f1f1;
 }
+
+.todo-item:hover {
+    background-color: #f2efeff5;
+}
+
+.todo-item div {
+    padding: 5px;
+    margin: 2px;
+
+    cursor: pointer;
+}
+
+.todo-item div:hover {
+    background-color: #f5f5f5;
+}
+
+
+.editing {
+    border: 1px solid #ddd;
+    padding: 4px;
+    margin: 1px;
+    background-color: white;
+}
+
+.editing:focus {
+    border-bottom: 2px solid #007bff;
+    border-color: #007bff;
+}
+
+textarea.editing {
+    min-height: 60px;
+    width: 100%;
+}

@@ -5,6 +5,7 @@ function createTodoElement(todo) {
     const todoElement = document.createElement("div");
     todoElement.classList.add("todo-item");
 
+    // TODO create a separate class for this to not repeat code
     // prepare the todo elements to be added to DOM
     const elements = [
         { content: todo.getTitle, class: 'todo-title' },
@@ -18,6 +19,50 @@ function createTodoElement(todo) {
         const element = document.createElement("div");
         element.textContent = content;
         element.classList.add(className);
+
+
+        // Allows for inline editing
+        element.addEventListener('click', function () {
+            let input = document.createElement(className === 'todo-notes' ? 'textarea' : 'input');
+            input.value = element.textContent;
+            input.classList.add(className, 'editing');
+
+            // Set appropriate input type for date
+            if (className === 'todo-date') {
+                input.type = 'date';
+            }
+
+            // Handle priority as select
+            if (className === 'todo-priority') {
+                const select = document.createElement('select');
+                ['Low Priority', 'Medium Priority', 'High Priority'].forEach((priority, index) => {
+                    const option = document.createElement('option');
+                    // TODO have it show priority name and not number from the start
+                    option.value = index;
+                    option.textContent = priority;
+                    select.appendChild(option);
+                });
+                input = select;
+                input.value = content;
+            }
+
+            // save changes when input loses focus or presses enter
+            input.addEventListener('blur', saveChanges);
+            input.addEventListener('keypress', function (event) {
+                if (event.key === 'Enter' && className !== 'todo-notes') {
+                    input.blur();
+                }
+            });
+
+            function saveChanges() {
+                element.textContent = input.value;
+                input.replaceWith(element);
+            }
+
+            element.replaceWith(input);
+            input.focus();
+        });
+
         todoElement.appendChild(element);
     });
 
@@ -45,9 +90,6 @@ function deleteTodo(todoElement) {
     todoElement.appendChild(deleteButton);
 }
 
-function editTodo() {
-    // TODO need to be able to edit a todo, on click turn it back into a form
-}
 
 function createTodoCheckbox(todoElement) {
 
