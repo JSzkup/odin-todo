@@ -5,13 +5,12 @@ function createTodoElement(todo) {
     const todoElement = document.createElement("div");
     todoElement.classList.add("todo-item");
 
-    // TODO create a separate class for this to not repeat code
     // prepare the todo elements to be added to DOM
     const elements = [
         { content: todo.getTitle, class: 'todo-title' },
         { content: todo.getDescription, class: 'todo-description' },
         { content: todo.getDueDate, class: 'todo-date' },
-        { content: todo.getPriority, class: 'todo-priority' },
+        { content: convertPriorityToText(todo.getPriority), class: 'todo-priority' },
         { content: todo.getNotes, class: 'todo-notes' }
     ];
 
@@ -37,7 +36,6 @@ function createTodoElement(todo) {
                 const select = document.createElement('select');
                 ['Low Priority', 'Medium Priority', 'High Priority'].forEach((priority, index) => {
                     const option = document.createElement('option');
-                    // TODO have it show priority name and not number from the start
                     option.value = index;
                     option.textContent = priority;
                     select.appendChild(option);
@@ -55,7 +53,11 @@ function createTodoElement(todo) {
             });
 
             function saveChanges() {
-                element.textContent = input.value;
+                if (className === 'todo-priority') {
+                    element.textContent = input.options[input.selectedIndex].textContent;
+                } else {
+                    element.textContent = input.value;
+                }
                 input.replaceWith(element);
             }
 
@@ -66,7 +68,21 @@ function createTodoElement(todo) {
         todoElement.appendChild(element);
     });
 
+    createTodoCheckbox(todoElement);
+    deleteTodo(todoElement);
+
     return todoElement;
+}
+
+function convertPriorityToText(priority) {
+    switch (priority) {
+        case 0:
+            return "Low Priority";
+        case 1:
+            return "Medium Priority";
+        case 2:
+            return "High Priority";
+    }
 }
 
 function createAddTodoButton() {
@@ -116,7 +132,7 @@ function submitTodo(todoArea, todoForm, elements) {
             elements.title.value,
             elements.description.value,
             elements.dueDate.value,
-            elements.priority.value,
+            parseInt(elements.priority.value),
             elements.notes.value
         );
 
@@ -134,7 +150,7 @@ function submitTodo(todoArea, todoForm, elements) {
     });
 }
 
-function addTodo(todoArea) {
+function addTodoForm(todoArea) {
     const todoForm = document.createElement('form');
     todoForm.classList.add("content");
 
@@ -197,13 +213,9 @@ export function todoDOM() {
     const todoElement = createTodoElement(testTodo);
     todoArea.appendChild(todoElement);
 
-    // TODO get these working with newly added elements
-    createTodoCheckbox(todoElement);
-    deleteTodo(todoElement);
-
     // Add the "Add Todo" button and form
     const todoButton = createAddTodoButton();
-    const form = addTodo(todoArea);
+    const form = addTodoForm(todoArea);
     form.style.display = "none";
 
     todoArea.appendChild(todoButton);
