@@ -57,6 +57,16 @@ body {
     background-color: #f1f1f1;
 }
 
+form>* {
+    display: flex;
+    flex-direction: column;
+}
+
+.todo-item {
+    /* TODO delete in bottom right corner */
+    /* TODO Checkbox in separate section to the left of the data */
+}
+
 .todo-item:hover {
     background-color: #f2efeff5;
 }

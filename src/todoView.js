@@ -31,7 +31,8 @@ function createTodoElement(todo) {
                 input.type = 'date';
             }
 
-            // Handle priority as select
+            // priority as select box
+            //  TODO when editing, pressing enter without selecting an option crashes things
             if (className === 'todo-priority') {
                 const select = document.createElement('select');
                 ['Low Priority', 'Medium Priority', 'High Priority'].forEach((priority, index) => {
@@ -75,6 +76,7 @@ function createTodoElement(todo) {
 }
 
 function convertPriorityToText(priority) {
+    // `converts priority number to a string
     switch (priority) {
         case 0:
             return "Low Priority";
@@ -94,6 +96,7 @@ function createAddTodoButton() {
 }
 
 function deleteTodo(todoElement) {
+    // creates a delete button that removes the todo item
     const deleteButton = document.createElement("button");
     deleteButton.classList.add("delete-button");
 
@@ -108,7 +111,7 @@ function deleteTodo(todoElement) {
 
 
 function createTodoCheckbox(todoElement) {
-
+    // creates a checkbox that marks the todo item as complete
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.classList.add("todo-checkbox");
@@ -125,6 +128,7 @@ function createTodoCheckbox(todoElement) {
 }
 
 function submitTodo(todoArea, todoForm, elements) {
+    // submits the todo form and creates a new todo item
     todoForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
@@ -132,7 +136,7 @@ function submitTodo(todoArea, todoForm, elements) {
             elements.title.value,
             elements.description.value,
             elements.dueDate.value,
-            parseInt(elements.priority.value),
+            parseInt(elements.priority.value), // turns the priotity string into a number
             elements.notes.value
         );
 
@@ -203,6 +207,15 @@ function resetForm(todoButton) {
         let content = this.nextElementSibling;
         content.style.display = content.style.display === "block" ? "none" : "block";
     });
+}
+
+function createFilters() {
+    // TODO create filter system
+    // new file for filter objects?
+}
+
+function filtersDOM() {
+    // TODO adding the filter system to the DOM
 }
 
 export function todoDOM() {
