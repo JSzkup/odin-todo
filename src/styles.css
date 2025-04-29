@@ -63,11 +63,23 @@ form>* {
 }
 
 .todo-item {
-    /* TODO delete in bottom right corner */
-    /* TODO Checkbox in separate section to the left of the data */
+    display: grid;
+
+    grid-template-columns: 5% 85% 10%;
 }
 
-.todo-item:hover {
+.todo-checkbox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.todo-delete {
+    display: flex;
+    align-items: flex-end;
+}
+
+.todo-text>div:hover {
     background-color: #f2efeff5;
 }
 
@@ -77,11 +89,6 @@ form>* {
 
     cursor: pointer;
 }
-
-.todo-item div:hover {
-    background-color: #f5f5f5;
-}
-
 
 .editing {
     border: 1px solid #ddd;

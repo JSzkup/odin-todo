@@ -7,6 +7,7 @@ export class todoClass {
         this.dueDate = dueDate;
         this.priority = priority; // 0 = low, 1 = medium, 2 = high
         this.notes = notes;
+        //  TODO add project here, filter should pull from this
     }
 
     get getTitle() {

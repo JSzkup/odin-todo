@@ -5,6 +5,25 @@ function createTodoElement(todo) {
     const todoElement = document.createElement("div");
     todoElement.classList.add("todo-item");
 
+    // checkbox div
+    const todoCheckBoxDiv = document.createElement("div");
+    todoCheckBoxDiv.classList.add("todo-checkbox");
+
+    createTodoCheckbox(todoCheckBoxDiv);
+
+    todoElement.appendChild(todoCheckBoxDiv);
+
+    // div for the body of the todo containing all the text
+    const todoTextDiv = document.createElement("div");
+    todoTextDiv.classList.add("todo-text");
+
+    // div for the delete button
+    const todoDeleteDiv = document.createElement("div");
+    todoDeleteDiv.classList.add("todo-delete");
+
+    deleteTodo(todoDeleteDiv);
+
+
     // prepare the todo elements to be added to DOM
     const elements = [
         { content: todo.getTitle, class: 'todo-title' },
@@ -33,6 +52,7 @@ function createTodoElement(todo) {
 
             // priority as select box
             //  TODO when editing, pressing enter without selecting an option crashes things
+            //  TODO because of above need default values for Priority and date
             if (className === 'todo-priority') {
                 const select = document.createElement('select');
                 ['Low Priority', 'Medium Priority', 'High Priority'].forEach((priority, index) => {
@@ -66,11 +86,12 @@ function createTodoElement(todo) {
             input.focus();
         });
 
-        todoElement.appendChild(element);
+        todoTextDiv.appendChild(element);
     });
 
-    createTodoCheckbox(todoElement);
-    deleteTodo(todoElement);
+    todoElement.appendChild(todoTextDiv);
+
+    todoElement.appendChild(todoDeleteDiv);
 
     return todoElement;
 }
@@ -211,7 +232,6 @@ function resetForm(todoButton) {
 
 function createFilters() {
     // TODO create filter system
-    // new file for filter objects?
 }
 
 function filtersDOM() {
