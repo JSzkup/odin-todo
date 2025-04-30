@@ -74,8 +74,7 @@ function createTodoElement(todo) {
             });
 
             function saveChanges() {
-
-                // ai solution
+                // saves the changes to the todo item once done editing
                 if (className === 'todo-priority') {
                     // save original value for fallback
                     const oldPriority = element.textContent;
@@ -87,15 +86,15 @@ function createTodoElement(todo) {
 
                     }
                 } else if (className === 'todo-date') {
-                    // TODO this works but changes the date format
                     // save original value for fallback
                     const oldDate = element.textContent;
+                    let newDateString = oldDate; // Default to old date if input is invalid
 
                     // For date inputs
-                    if (!input.value) {
-                        input.value = format(new Date(oldDate), "yyyy-MM-dd");
+                    if (input.value) { // Check if input has a value
+                        newDateString = format(new Date(input.value), "MM/dd/yyyy");
                     }
-                    element.textContent = input.value;
+                    element.textContent = newDateString;
                 } else {
                     // For regular text inputs
                     if (!input.value) {
