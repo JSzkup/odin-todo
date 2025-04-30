@@ -51,8 +51,7 @@ function createTodoElement(todo) {
             }
 
             // priority as select box
-            //  TODO when editing, pressing enter without selecting an option crashes things
-            //  TODO because of above need default values for Priority and date
+            //  TODO Need fallback values when editing
             if (className === 'todo-priority') {
                 const select = document.createElement('select');
                 ['Low Priority', 'Medium Priority', 'High Priority'].forEach((priority, index) => {
@@ -158,7 +157,8 @@ function submitTodo(todoArea, todoForm, elements) {
             elements.description.value,
             elements.dueDate.value,
             parseInt(elements.priority.value), // turns the priotity string into a number
-            elements.notes.value
+            elements.notes.value,
+            elements.project.value
         );
 
         const todoElement = createTodoElement(newTodo);
@@ -192,6 +192,7 @@ function addTodoForm(todoArea) {
             ]
         },
         { type: 'textarea', attrs: { placeholder: 'Notes', id: 'notes' } },
+        { type: 'input', attrs: { type: 'text', placeholder: 'Project', id: 'project' } },
         { type: 'button', attrs: { type: 'submit', textContent: 'Create Todo' } }
     ];
 

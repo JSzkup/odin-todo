@@ -1,13 +1,14 @@
-
+import { format } from "date-fns";
 
 export class todoClass {
-    constructor(title, description, dueDate, priority, notes) {
-        this.title = title;
-        this.description = description;
-        this.dueDate = dueDate;
-        this.priority = priority; // 0 = low, 1 = medium, 2 = high
-        this.notes = notes;
-        //  TODO add project here, filter should pull from this
+    constructor(title, description, dueDate, priority, notes, project) {
+        // constructors with default values
+        this.title = title || "Untitled Todo";
+        this.description = description || "No Description";
+        this.dueDate = dueDate || format(new Date(), "MM/dd/yyyy");
+        this.priority = priority !== undefined && priority !== null ? priority : 0; // Default priority to Low (0)
+        this.notes = notes || " ";
+        this.project = project || "Default";
     }
 
     get getTitle() {
@@ -42,5 +43,11 @@ export class todoClass {
     }
     set setNotes(notes) {
         this.notes = notes;
+    }
+    get getProject() {
+        return this.project;
+    }
+    set setProject(project) {
+        this.project = project;
     }
 }
