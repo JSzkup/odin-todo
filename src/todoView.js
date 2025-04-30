@@ -1,4 +1,6 @@
 import { todoClass } from "./todoCreation.js";
+import { format } from "date-fns";
+
 
 function createTodoElement(todo) {
     //  create div for the todo item
@@ -51,7 +53,6 @@ function createTodoElement(todo) {
             }
 
             // priority as select box
-            //  TODO Need fallback values when editing
             if (className === 'todo-priority') {
                 const select = document.createElement('select');
                 ['Low Priority', 'Medium Priority', 'High Priority'].forEach((priority, index) => {
@@ -73,9 +74,33 @@ function createTodoElement(todo) {
             });
 
             function saveChanges() {
+
+                // ai solution
                 if (className === 'todo-priority') {
-                    element.textContent = input.options[input.selectedIndex].textContent;
+                    // save original value for fallback
+                    const oldPriority = element.textContent;
+
+                    if (input.selectedIndex === -1 || !input.options[input.selectedIndex]) {
+                        element.textContent = oldPriority;
+                    } else {
+                        element.textContent = input.options[input.selectedIndex].textContent;
+
+                    }
+                } else if (className === 'todo-date') {
+                    // TODO this works but changes the date format
+                    // save original value for fallback
+                    const oldDate = element.textContent;
+
+                    // For date inputs
+                    if (!input.value) {
+                        input.value = format(new Date(oldDate), "yyyy-MM-dd");
+                    }
+                    element.textContent = input.value;
                 } else {
+                    // For regular text inputs
+                    if (!input.value) {
+                        return;
+                    }
                     element.textContent = input.value;
                 }
                 input.replaceWith(element);
@@ -105,6 +130,19 @@ function convertPriorityToText(priority) {
         case 2:
             return "High Priority";
     }
+}
+
+function convertTextToPriorityIndex(priority) {
+    // converts priority string to a number
+    switch (priority) {
+        case "Low Priority":
+            return 0;
+        case "Medium Priority":
+            return 1;
+        case "High Priority":
+            return 2;
+    }
+
 }
 
 function createAddTodoButton() {
