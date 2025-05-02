@@ -63,10 +63,35 @@ form>* {
 }
 
 .todo-item {
+    /* TODO make title font size larger, less margins between divs */
     display: grid;
 
     grid-template-columns: 5% 85% 10%;
 }
+
+.show {
+    display: grid;
+
+    grid-template-columns: 5% 85% 10%;
+
+    /* TODO fade in elements */
+}
+
+.hide {
+    display: none !important;
+    /* TODO fade out elements */
+}
+
+.filter-btn {
+    border-radius: 10px;
+    background-color: #eee;
+}
+
+.filter-btn:active {
+    /* TODO make non active elements less opaque */
+    background-color: #ccc;
+}
+
 
 .todo-checkbox {
     display: flex;
@@ -86,8 +111,6 @@ form>* {
 .todo-item div {
     padding: 5px;
     margin: 2px;
-
-    cursor: pointer;
 }
 
 .editing {

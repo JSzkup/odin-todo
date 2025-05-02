@@ -7,6 +7,12 @@ function createTodoElement(todo) {
     const todoElement = document.createElement("div");
     todoElement.classList.add("todo-item");
 
+    // second class for filtering
+    // todoElement.classList.add(todo.getProject || "Default");
+
+    // set the project as a data attribute for filtering
+    todoElement.dataset.project = todo.getProject || "Default";
+
     // checkbox div
     const todoCheckBoxDiv = document.createElement("div");
     todoCheckBoxDiv.classList.add("todo-checkbox");
@@ -131,19 +137,6 @@ function convertPriorityToText(priority) {
     }
 }
 
-function convertTextToPriorityIndex(priority) {
-    // converts priority string to a number
-    switch (priority) {
-        case "Low Priority":
-            return 0;
-        case "Medium Priority":
-            return 1;
-        case "High Priority":
-            return 2;
-    }
-
-}
-
 function createAddTodoButton() {
     // creates a button that functions as a collapsible
     const todoButton = document.createElement("button");
@@ -159,7 +152,7 @@ function deleteTodo(todoElement) {
 
     deleteButton.textContent = "Delete";
     deleteButton.addEventListener("click", () => {
-        const delTodoElement = deleteButton.parentElement;
+        const delTodoElement = deleteButton.parentElement.parentElement;
         delTodoElement.remove();
     });
 
@@ -268,12 +261,53 @@ function resetForm(todoButton) {
     });
 }
 
-function createFilters() {
-    // TODO create filter system
+function getProjects() {
+    // TODO gets every project from todo items
+}
+
+function projectArray(projects) {
+    // TODO turns each project into an array
+}
+
+function filterSelection(filterID) {
+    // hides/shows todo items based on their project
+    const todoElements = document.querySelectorAll(".todo-item");
+    // TODO fully completed elements can be given the "completed" class which should stay hidden here
+
+    Array.from(todoElements).forEach(element => {
+        const todoElementProject = element.dataset.project;
+
+        if (filterID === "show-all") {
+            // Show all elements
+            element.classList.remove("hide");
+            element.classList.add("show");
+        } else if (filterID === todoElementProject) {
+            // Show only elements matching the filter
+            element.classList.remove("hide");
+            element.classList.add("show");
+        } else {
+            element.classList.remove("show");
+            element.classList.add("hide");
+        }
+    });
 }
 
 function filtersDOM() {
-    // TODO adding the filter system to the DOM
+    const filterButtons = document.querySelectorAll(".filter-btn");
+    // TODO dynamically create filter buttons based on projects
+
+    // initialize each filter button with filter function
+    filterButtons.forEach(button => {
+        button.addEventListener("click", function () {
+            // Get the filter ID from the clicked button
+            const filterId = this.id;
+            filterSelection(filterId);
+
+            // adds an active class to the selected filter button
+            filterButtons.forEach(btn => btn.classList.remove("active"));
+            this.classList.add("active");
+        });
+    });
 }
 
 export function todoDOM() {
@@ -293,6 +327,9 @@ export function todoDOM() {
     todoArea.appendChild(form);
 
     resetForm(todoButton);
+
+    filtersDOM();
+    // filterSelection();
 
 
 }
