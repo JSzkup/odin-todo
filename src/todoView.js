@@ -154,6 +154,9 @@ function deleteTodo(todoElement) {
     deleteButton.addEventListener("click", () => {
         const delTodoElement = deleteButton.parentElement.parentElement;
         delTodoElement.remove();
+
+        // Recreate filter buttons after deletion
+        createFilterButtons();
     });
 
     todoElement.appendChild(deleteButton);
@@ -202,7 +205,11 @@ function submitTodo(todoArea, todoForm, elements) {
         const addButton = todoForm.previousElementSibling;
         todoArea.appendChild(addButton);
         todoArea.appendChild(todoForm);
+
+        // Recreate filter buttons after adding a new todo
+        createFilterButtons();
     });
+
 }
 
 function addTodoForm(todoArea) {
@@ -261,12 +268,20 @@ function resetForm(todoButton) {
     });
 }
 
-function getProjects() {
-    // TODO gets every project from todo items
-}
+function createProjectArray() {
+    // gets every project from todo items
+    const todoElements = document.querySelectorAll(".todo-item");
+    let projectArray = [];
 
-function projectArray(projects) {
-    // TODO turns each project into an array
+    Array.from(todoElements).forEach(element => {
+        const todoElementProject = element.dataset.project;
+        projectArray.push(todoElementProject);
+    });
+
+    // remove duplicates from the project array
+    projectArray = [...new Set(projectArray)];
+
+    return projectArray;
 }
 
 function filterSelection(filterID) {
@@ -292,9 +307,46 @@ function filterSelection(filterID) {
     });
 }
 
+function createFilterButtons() {
+    const filterArea = document.querySelector("#filters");
+
+    // Clear the filter area before adding new buttons to prevent duplicates
+    clearDiv("#filters");
+
+    // Adds a separate show all button that always appears
+    const showAllButton = document.createElement("button");
+    showAllButton.classList.add("filter-btn");
+    showAllButton.id = "show-all";
+    showAllButton.textContent = "Show All";
+
+    filterArea.appendChild(showAllButton);
+
+    const projectArray = createProjectArray();
+
+    // Create filter buttons for each project
+    for (let i = 0; i < projectArray.length; i++) {
+        const button = document.createElement("button");
+        button.classList.add("filter-btn");
+        button.id = projectArray[i];
+        button.textContent = projectArray[i];
+
+        filterArea.appendChild(button);
+    }
+
+    // TODO add a "completed" button to show only completed todos
+
+    // re-run function to add event listeners to the new buttons
+    filtersDOM();
+}
+
+function clearDiv(element) {
+    // empties a specified div
+    document.querySelector(element).innerHTML = "";
+}
+
 function filtersDOM() {
+
     const filterButtons = document.querySelectorAll(".filter-btn");
-    // TODO dynamically create filter buttons based on projects
 
     // initialize each filter button with filter function
     filterButtons.forEach(button => {
@@ -328,8 +380,8 @@ export function todoDOM() {
 
     resetForm(todoButton);
 
+    createFilterButtons();
     filtersDOM();
-    // filterSelection();
 
 
 }
