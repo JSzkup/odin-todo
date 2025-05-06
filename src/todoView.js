@@ -211,7 +211,7 @@ function submitTodo(todoArea, todoForm, elements) {
         createFilterButtons();
     });
 
-    // TODO need a nice way of editing the project of a todo item
+    // TODO write the project in the top right of the todo item in the delete button div
 
 }
 
@@ -291,7 +291,6 @@ function filterSelection(filterID) {
     // hides/shows todo items based on their project
     const todoElements = document.querySelectorAll(".todo-item");
 
-    // TODO need to hide completed todos when not selected
     Array.from(todoElements).forEach(element => {
         const todoElementProject = element.dataset.project;
         const isCompleted = element.classList.contains("completed");

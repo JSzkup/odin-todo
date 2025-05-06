@@ -67,6 +67,8 @@ form>* {
     display: grid;
 
     grid-template-columns: 5% 85% 10%;
+
+    border-bottom: 1px solid #ddd;
 }
 
 .show {
@@ -85,12 +87,16 @@ form>* {
 .filter-btn {
     border-radius: 10px;
     background-color: #eee;
+
+    opacity: 0.5;
 }
 
-.filter-btn:active {
-    /* TODO make non active elements less opaque */
-    background-color: #ccc;
+.filter-btn.active {
+    background-color: rgb(179, 219, 232);
+
+    opacity: 1;
 }
+
 
 
 .todo-checkbox {
