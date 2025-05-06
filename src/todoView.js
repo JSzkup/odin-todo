@@ -294,20 +294,22 @@ function filterSelection(filterID) {
     // TODO need to hide completed todos when not selected
     Array.from(todoElements).forEach(element => {
         const todoElementProject = element.dataset.project;
+        const isCompleted = element.classList.contains("completed");
 
-        if (filterID === "show-all") {
+        if (filterID === "show-all" && !isCompleted) {
             // Show all elements
             element.classList.remove("hide");
             element.classList.add("show");
-        } else if (element.classList.contains("completed")) {
-            // Show completed elements
+        } else if (filterID === "completed" && isCompleted) {
+            // Show only completed elements when completed filter is selected
             element.classList.remove("hide");
             element.classList.add("show");
-        } else if (filterID === todoElementProject) {
-            // Show only elements matching the filter
+        } else if (filterID === todoElementProject && !isCompleted) {
+            // Show only elements matching the project filter that aren't completed
             element.classList.remove("hide");
             element.classList.add("show");
         } else {
+            // Hide everything else
             element.classList.remove("show");
             element.classList.add("hide");
         }
@@ -316,6 +318,7 @@ function filterSelection(filterID) {
 
 function createFilterButtons() {
     const filterArea = document.querySelector("#filters");
+    // TODO color coordinate todos with their project/filter button
 
     // Clear the filter area before adding new buttons to prevent duplicates
     clearDiv("#filters");
