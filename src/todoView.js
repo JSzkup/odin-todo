@@ -7,9 +7,6 @@ function createTodoElement(todo) {
     const todoElement = document.createElement("div");
     todoElement.classList.add("todo-item");
 
-    // second class for filtering
-    // todoElement.classList.add(todo.getProject || "Default");
-
     // set the project as a data attribute for filtering
     todoElement.dataset.project = todo.getProject || "Default";
 
@@ -170,10 +167,14 @@ function createTodoCheckbox(todoElement) {
     checkbox.classList.add("todo-checkbox");
 
     checkbox.addEventListener("change", () => {
-        if (checkbox.checked) {
-            todoElement.classList.add("completed");
-        } else {
-            todoElement.classList.remove("completed");
+        // Find the parent todo-item element when the checkbox is clicked
+        const todoItemDiv = checkbox.closest(".todo-item") || todoElement.closest(".todo-item");
+        if (todoItemDiv) {
+            if (checkbox.checked) {
+                todoItemDiv.classList.add("completed");
+            } else {
+                todoItemDiv.classList.remove("completed");
+            }
         }
     });
 
@@ -209,6 +210,8 @@ function submitTodo(todoArea, todoForm, elements) {
         // Recreate filter buttons after adding a new todo
         createFilterButtons();
     });
+
+    // TODO need a nice way of editing the project of a todo item
 
 }
 
@@ -287,13 +290,17 @@ function createProjectArray() {
 function filterSelection(filterID) {
     // hides/shows todo items based on their project
     const todoElements = document.querySelectorAll(".todo-item");
-    // TODO fully completed elements can be given the "completed" class which should stay hidden here
 
+    // TODO need to hide completed todos when not selected
     Array.from(todoElements).forEach(element => {
         const todoElementProject = element.dataset.project;
 
         if (filterID === "show-all") {
             // Show all elements
+            element.classList.remove("hide");
+            element.classList.add("show");
+        } else if (element.classList.contains("completed")) {
+            // Show completed elements
             element.classList.remove("hide");
             element.classList.add("show");
         } else if (filterID === todoElementProject) {
@@ -333,7 +340,13 @@ function createFilterButtons() {
         filterArea.appendChild(button);
     }
 
-    // TODO add a "completed" button to show only completed todos
+    // Adds a button to show completed todos
+    const completedButton = document.createElement("button");
+    completedButton.classList.add("filter-btn");
+    completedButton.id = "completed";
+    completedButton.textContent = "Completed";
+
+    filterArea.appendChild(completedButton);
 
     // re-run function to add event listeners to the new buttons
     filtersDOM();
