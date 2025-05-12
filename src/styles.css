@@ -14,6 +14,20 @@ body {
 
 }
 
+#main-header {
+    display: flex;
+}
+
+#filters {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+
+    width: 100%;
+
+    margin-left: 20px;
+}
+
 #main {
     display: flex;
     flex-direction: column;
@@ -63,12 +77,32 @@ form>* {
 }
 
 .todo-item {
-    /* TODO make title font size larger, less margins between divs */
     display: grid;
 
     grid-template-columns: 5% 85% 10%;
 
     border-bottom: 1px solid #ddd;
+}
+
+.todo-item.completed {
+    opacity: 0.5;
+    background-color: light grey;
+    ;
+}
+
+.todo-item div {
+    padding: 3px;
+    margin: 0px;
+}
+
+.todo-checkbox-btn {
+    width: 100%;
+    height: 100%;
+}
+
+.todo-title {
+    font-weight: bold;
+    font-size: 1.3em;
 }
 
 .show {
@@ -97,8 +131,6 @@ form>* {
     opacity: 1;
 }
 
-
-
 .todo-checkbox {
     display: flex;
     justify-content: center;
@@ -112,11 +144,6 @@ form>* {
 
 .todo-text>div:hover {
     background-color: #f2efeff5;
-}
-
-.todo-item div {
-    padding: 5px;
-    margin: 2px;
 }
 
 .editing {

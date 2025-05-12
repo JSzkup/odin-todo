@@ -136,6 +136,7 @@ function convertPriorityToText(priority) {
 
 function createAddTodoButton() {
     // creates a button that functions as a collapsible
+    // TODO on press scroll down the screen to see the whole form
     const todoButton = document.createElement("button");
     todoButton.classList.add("collapsible");
     todoButton.textContent = "Add Todo";
@@ -164,7 +165,7 @@ function createTodoCheckbox(todoElement) {
     // creates a checkbox that marks the todo item as complete
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
-    checkbox.classList.add("todo-checkbox");
+    checkbox.classList.add("todo-checkbox-btn");
 
     checkbox.addEventListener("change", () => {
         // Find the parent todo-item element when the checkbox is clicked
@@ -381,7 +382,7 @@ export function todoDOM() {
     const todoArea = document.querySelector("#main-todos");
 
     // Create initial test todo
-    const testTodo = new todoClass("Clean thing", "make a thing clean", "10/28/1998", 2, "no note");
+    const testTodo = new todoClass("Clean thing", "make a thing clean", "10/28/1998", 2, "no notes");
     const todoElement = createTodoElement(testTodo);
     todoArea.appendChild(todoElement);
 

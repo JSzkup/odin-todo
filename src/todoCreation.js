@@ -7,7 +7,7 @@ export class todoClass {
         this.description = description || "No Description";
         this.dueDate = dueDate || format(new Date(), "MM/dd/yyyy");
         this.priority = priority !== undefined && priority !== null ? priority : 0; // Default priority to Low (0)
-        this.notes = notes || " ";
+        this.notes = notes || "no notes";
         this.project = project || "Default";
     }
 
