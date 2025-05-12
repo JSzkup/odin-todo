@@ -1,10 +1,12 @@
 body {
     display: flex;
 
-    font-family: 'Roboto', sans-serif;
+    min-height: 100vh;
+    margin-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 20px;
 
-    /* testing margins */
-    margin: 50px;
+    font-family: 'Roboto', sans-serif;
 }
 
 #sidebar {
@@ -12,8 +14,48 @@ body {
     flex-direction: column;
 
     width: 20vw;
-    height: 100vh;
+    min-width: 200px;
 
+    /* allows the height to stretch past the original page size */
+    min-height: 100vh;
+    height: auto;
+
+    border-right: 1px solid #ddd;
+
+    padding: 10px;
+}
+
+#sidebar-logo {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+
+    align-items: center;
+
+    width: 100%;
+}
+
+#sidebar img {
+    flex-shrink: 1;
+
+    width: auto;
+    height: auto;
+
+    max-height: 80px;
+    max-width: 40%;
+
+    object-fit: contain;
+
+    margin: 0;
+    padding: 0;
+}
+
+#sidebar h1 {
+    font-size: clamp(1.5em, 2.2em, 2.5em);
+    margin-left: 10px;
+    flex-shrink: 0;
+    flex-grow: 1;
 }
 
 #main-header {
@@ -35,7 +77,9 @@ body {
     flex-direction: column;
 
     width: 80vw;
-    height: 100vh;
+    min-height: 100vh;
+    height: auto;
+    /* Allow height to grow as needed */
 }
 
 #main-todos {
@@ -48,7 +92,7 @@ body {
 
 /* Style the button that is used to open and close the collapsible content */
 .collapsible {
-    background-color: #eee;
+    background-color: #1d1c1c10;
     color: #444;
     cursor: pointer;
     padding: 18px;
@@ -100,7 +144,7 @@ form>button {
 
     color: white;
 
-    background-color: rgb(79, 182, 217);
+    background-color: rgb(16, 158, 206);
 }
 
 .todo-item {
