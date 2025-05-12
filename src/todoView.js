@@ -137,10 +137,26 @@ function convertPriorityToText(priority) {
 
 function createAddTodoButton() {
     // creates a button that functions as a collapsible
-    // TODO on press scroll down the screen to see the whole form
     const todoButton = document.createElement("button");
     todoButton.classList.add("collapsible");
     todoButton.textContent = "Add Todo";
+
+    // Add click event listener to scroll when the form is shown
+    todoButton.addEventListener("click", function () {
+        // Use setTimeout to wait for the display change to take effect
+        setTimeout(() => {
+            const content = this.nextElementSibling;
+            if (content.style.display === "block") {
+                // Only scroll if the content is now visible
+                content.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                    inline: "nearest"
+                });
+            }
+        }, 10); // Small delay to ensure the display has changed
+    });
+
     return todoButton;
 }
 

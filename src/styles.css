@@ -74,6 +74,7 @@ body {
 form>* {
     display: flex;
     flex-direction: column;
+    margin: 3px;
 }
 
 .todo-item {
@@ -96,6 +97,7 @@ form>* {
 }
 
 .todo-checkbox-btn {
+    /* TODO this can make the button too big/small should be more constant size */
     width: 100%;
     height: 100%;
 }
