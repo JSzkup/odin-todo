@@ -390,7 +390,6 @@ function filterSelection(filterID) {
 
 function createFilterButtons() {
     const filterArea = document.querySelector("#filters");
-    // TODO color coordinate todos with their project/filter button
 
     // Clear the filter area before adding new buttons to prevent duplicates
     clearDiv("#filters");

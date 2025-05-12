@@ -1,6 +1,8 @@
 body {
     display: flex;
 
+    font-family: 'Roboto', sans-serif;
+
     /* testing margins */
     margin: 50px;
 }
