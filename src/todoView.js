@@ -117,7 +117,6 @@ function createTodoElement(todo) {
     });
 
     todoElement.appendChild(todoTextDiv);
-
     todoElement.appendChild(todoDeleteDiv);
 
     return todoElement;
@@ -205,9 +204,56 @@ function createProjectElement(project, todoDeleteDiv) {
     projectElement.classList.add("project-item");
     projectElement.textContent = project;
 
+    // Allows for inline editing of the project name
+    projectElement.addEventListener('click', function () {
+        let input = document.createElement('input');
+        input.value = projectElement.textContent;
+        input.classList.add('editing');
+
+        // Save changes when input loses focus
+        input.addEventListener('blur', saveProjectChanges);
+
+        // Save changes when Enter key is pressed
+        input.addEventListener('keypress', function (event) {
+            if (event.key === 'Enter') {
+                input.blur();
+            }
+        });
+
+        function saveProjectChanges() {
+            // Don't save if input is empty
+            if (!input.value.trim()) {
+                input.value = projectElement.textContent;
+            } else {
+                // Update the project name
+                const oldProject = projectElement.textContent;
+                const newProject = input.value.trim();
+
+                // Update the project element text
+                projectElement.textContent = newProject;
+
+                // Update the parent todo item's data-project attribute
+                const todoItem = todoDeleteDiv.closest('.todo-item');
+                if (todoItem) {
+                    todoItem.dataset.project = newProject;
+
+                    // Recreate filter buttons to reflect the project name change
+                    createFilterButtons();
+                }
+            }
+
+            // Replace the input with the project element
+            input.replaceWith(projectElement);
+        }
+
+        // Replace the project element with the input
+        projectElement.replaceWith(input);
+        input.focus();
+    });
+
     todoDeleteDiv.appendChild(projectElement);
-    // TODO need to be able to edit the project name
 }
+
 
 function submitTodo(todoArea, todoForm, elements) {
     // submits the todo form and creates a new todo item

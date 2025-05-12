@@ -150,6 +150,10 @@ form>* {
     width: 100%;
 }
 
+.todo-delete>.editing {
+    width: 100%;
+}
+
 .todo-text>div:hover {
     background-color: #f2efeff5;
 }
