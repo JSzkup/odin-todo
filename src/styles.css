@@ -74,7 +74,31 @@ body {
 form>* {
     display: flex;
     flex-direction: column;
-    margin: 3px;
+
+    height: 2em;
+    width: 40%;
+    min-width: 200px;
+
+    margin: 4px;
+
+    /* Reset browser defaults */
+    box-sizing: border-box;
+    padding: 0;
+    border: none;
+
+}
+
+form>button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: 2px solid blue;
+    border-radius: 10px;
+
+    color: white;
+
+    background-color: rgb(79, 182, 217);
 }
 
 .todo-item {
