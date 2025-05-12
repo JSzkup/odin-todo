@@ -26,6 +26,7 @@ function createTodoElement(todo) {
     const todoDeleteDiv = document.createElement("div");
     todoDeleteDiv.classList.add("todo-delete");
 
+    createProjectElement(todo.getProject, todoDeleteDiv);
     deleteTodo(todoDeleteDiv);
 
 
@@ -182,6 +183,16 @@ function createTodoCheckbox(todoElement) {
     todoElement.appendChild(checkbox);
 }
 
+function createProjectElement(project, todoDeleteDiv) {
+    // Adds the project name to the delete button div
+    const projectElement = document.createElement("div");
+    projectElement.classList.add("project-item");
+    projectElement.textContent = project;
+
+    todoDeleteDiv.appendChild(projectElement);
+    // TODO need to be able to edit the project name
+}
+
 function submitTodo(todoArea, todoForm, elements) {
     // submits the todo form and creates a new todo item
     todoForm.addEventListener('submit', (e) => {
@@ -212,7 +223,6 @@ function submitTodo(todoArea, todoForm, elements) {
         createFilterButtons();
     });
 
-    // TODO write the project in the top right of the todo item in the delete button div
 
 }
 
