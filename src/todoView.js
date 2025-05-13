@@ -39,6 +39,18 @@ function createTodoElement(todo) {
         { content: todo.getNotes, class: 'todo-notes' }
     ];
 
+    // allows the todo elements to be edited
+    editTodo(elements, todoTextDiv);
+
+    todoElement.appendChild(todoTextDiv);
+    todoElement.appendChild(todoDeleteDiv);
+
+    return todoElement;
+}
+
+function editTodo(elements, todoTextDiv) {
+    // for each element, add an event that lets it be edited inline
+
     elements.forEach(({ content, class: className }) => {
         const element = document.createElement("div");
         element.textContent = content;
@@ -115,11 +127,6 @@ function createTodoElement(todo) {
 
         todoTextDiv.appendChild(element);
     });
-
-    todoElement.appendChild(todoTextDiv);
-    todoElement.appendChild(todoDeleteDiv);
-
-    return todoElement;
 }
 
 function convertPriorityToText(priority) {
@@ -204,6 +211,12 @@ function createProjectElement(project, todoDeleteDiv) {
     projectElement.classList.add("project-item");
     projectElement.textContent = project;
 
+    editProjectName(projectElement, todoDeleteDiv);
+
+    todoDeleteDiv.appendChild(projectElement);
+}
+
+function editProjectName(projectElement, todoDeleteDiv) {
     // Allows for inline editing of the project name
     projectElement.addEventListener('click', function () {
         let input = document.createElement('input');
@@ -250,8 +263,6 @@ function createProjectElement(project, todoDeleteDiv) {
         projectElement.replaceWith(input);
         input.focus();
     });
-
-    todoDeleteDiv.appendChild(projectElement);
 }
 
 
