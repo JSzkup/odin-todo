@@ -141,6 +141,18 @@ function convertPriorityToText(priority) {
     }
 }
 
+function convertPriorityToNumber(priority) {
+    // converts priority string to a number
+    switch (priority) {
+        case "Low Priority":
+            return 0;
+        case "Medium Priority":
+            return 1;
+        case "High Priority":
+            return 2;
+    }
+}
+
 function createAddTodoButton() {
     // creates a button that functions as a collapsible
     const todoButton = document.createElement("button");
@@ -178,6 +190,7 @@ function deleteTodo(todoElement) {
 
         // Recreate filter buttons after deletion
         createFilterButtons();
+        savePageWebStorage();
     });
 
     todoElement.appendChild(deleteButton);
@@ -252,6 +265,7 @@ function editProjectName(projectElement, todoDeleteDiv) {
 
                     // Recreate filter buttons to reflect the project name change
                     createFilterButtons();
+                    savePageWebStorage();
                 }
             }
 
@@ -294,6 +308,8 @@ function submitTodo(todoArea, todoForm, elements) {
 
         // Recreate filter buttons after adding a new todo
         createFilterButtons();
+        savePageWebStorage();
+
     });
 
 
@@ -435,6 +451,7 @@ function createFilterButtons() {
 
     // re-run function to add event listeners to the new buttons
     filtersDOM();
+
 }
 
 function clearDiv(element) {
@@ -460,11 +477,83 @@ function filtersDOM() {
     });
 }
 
+function savePageWebStorage() {
+
+    // select all todo elements in the DOM
+    const todoElements = document.querySelectorAll(".todo-item");
+    const todoList = [];
+
+    for (let i = 0; i < todoElements.length; i++) {
+        // pull apart each todo element into its components into an dictionary
+        const todoElement = todoElements[i];
+        const title = todoElement.querySelector(".todo-title").textContent;
+        const description = todoElement.querySelector(".todo-description").textContent;
+        const dueDate = todoElement.querySelector(".todo-date").textContent;
+        const priorityText = todoElement.querySelector(".todo-priority").textContent;
+        const notes = todoElement.querySelector(".todo-notes").textContent;
+        const project = todoElement.dataset.project;
+        const completed = todoElement.classList.contains("completed");
+
+        // Convert priority text back to number
+        let priority = convertPriorityToNumber(priorityText);
+
+        // Create a todo object to be stringified
+        const todoObject = {
+            todotitle: title,
+            todoDescription: description,
+            todoDueDate: dueDate,
+            todoPriority: priority,
+            todoNotes: notes,
+            todoProject: project,
+            todoCompleted: completed
+        };
+
+        todoList.push(todoObject);
+    }
+
+    localStorage.setItem("todoList", JSON.stringify(todoList));
+
+}
+
+
+function loadPageWebStorage() {
+    const todoArea = document.querySelector("#main-todos");
+    const storedTodos = localStorage.getItem("todoList");
+
+    if (storedTodos) {
+        const todoList = JSON.parse(storedTodos);
+
+        todoList.forEach(todo => {
+            const newTodo = new todoClass(
+                todo.todotitle,
+                todo.todoDescription,
+                todo.todoDueDate,
+                todo.todoPriority,
+                todo.todoNotes,
+                todo.todoProject
+            );
+
+            const todoElement = createTodoElement(newTodo);
+
+            // Set completed status if needed
+            if (todo.todoCompleted) {
+                todoElement.classList.add("completed");
+                todoElement.querySelector(".todo-checkbox-btn").checked = true;
+            }
+
+            todoArea.appendChild(todoElement);
+        });
+    }
+}
+
+
 export function todoDOM() {
     const todoArea = document.querySelector("#main-todos");
 
+    // TODO test todo should ONLY show up if there are no todos in local storage
     // Create initial test todo
     const testTodo = new todoClass("Clean thing", "make a thing clean", "10/28/1998", 2, "no notes");
+
     const todoElement = createTodoElement(testTodo);
     todoArea.appendChild(todoElement);
 
@@ -476,6 +565,9 @@ export function todoDOM() {
     todoArea.appendChild(todoButton);
     todoArea.appendChild(form);
 
+    loadPageWebStorage();
+
+    // TODO add Todo form button always starts at the first todo item despite loading more
     resetForm(todoButton);
 
     createFilterButtons();
