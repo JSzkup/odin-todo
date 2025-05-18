@@ -108,7 +108,7 @@ function editTodo(elements, todoTextDiv) {
 
                     // For date inputs
                     if (input.value) { // Check if input has a value
-                        newDateString = format(new Date(input.value), "MM/dd/yyyy");
+                        newDateString = standardizeDateFormat(input.value);
                     }
                     element.textContent = newDateString;
                 } else {
@@ -285,10 +285,12 @@ function submitTodo(todoArea, todoForm, elements) {
     todoForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
+        const standardizdedDate = standardizeDateFormat(elements.dueDate.value);
+
         const newTodo = new todoClass(
             elements.title.value,
             elements.description.value,
-            elements.dueDate.value,
+            standardizdedDate,
             parseInt(elements.priority.value), // turns the priotity string into a number
             elements.notes.value,
             elements.project.value
@@ -459,6 +461,17 @@ function clearDiv(element) {
     document.querySelector(element).innerHTML = "";
 }
 
+function standardizeDateFormat(dateString) {
+    // Check if date is in YYYY-MM-DD format and returns it in MM/DD/YYYY format
+    if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+        // Split the date string to avoid timezone issues
+        const [year, month, day] = dateString.split('-').map(Number);
+        return `${month}/${day}/${year}`;
+    }
+    return dateString;
+}
+
+
 function filtersDOM() {
 
     const filterButtons = document.querySelectorAll(".filter-btn");
@@ -524,10 +537,11 @@ function loadPageWebStorage() {
         const todoList = JSON.parse(storedTodos);
 
         todoList.forEach(todo => {
+            const standardizedDate = standardizeDateFormat(todo.todoDueDate);
             const newTodo = new todoClass(
                 todo.todotitle,
                 todo.todoDescription,
-                todo.todoDueDate,
+                standardizedDate,
                 todo.todoPriority,
                 todo.todoNotes,
                 todo.todoProject
@@ -550,12 +564,15 @@ function loadPageWebStorage() {
 export function todoDOM() {
     const todoArea = document.querySelector("#main-todos");
 
-    // TODO test todo should ONLY show up if there are no todos in local storage
     // Create initial test todo
-    const testTodo = new todoClass("Clean thing", "make a thing clean", "10/28/1998", 2, "no notes");
+    if (!localStorage.getItem("todoList")) {
+        const testTodo = new todoClass("Clean thing", "make a thing clean", "10/28/1998", 2, "no notes");
+        const todoElement = createTodoElement(testTodo);
+        todoArea.appendChild(todoElement);
+    }
 
-    const todoElement = createTodoElement(testTodo);
-    todoArea.appendChild(todoElement);
+    // Load todos from local storage before adding the form/filter buttons
+    loadPageWebStorage();
 
     // Add the "Add Todo" button and form
     const todoButton = createAddTodoButton();
@@ -565,9 +582,6 @@ export function todoDOM() {
     todoArea.appendChild(todoButton);
     todoArea.appendChild(form);
 
-    loadPageWebStorage();
-
-    // TODO add Todo form button always starts at the first todo item despite loading more
     resetForm(todoButton);
 
     createFilterButtons();
