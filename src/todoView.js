@@ -212,6 +212,8 @@ function createTodoCheckbox(todoElement) {
             } else {
                 todoItemDiv.classList.remove("completed");
             }
+
+            savePageWebStorage();
         }
     });
 
